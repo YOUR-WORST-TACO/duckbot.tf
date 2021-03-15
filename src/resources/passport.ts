@@ -16,7 +16,7 @@ export const init = () => {
         }
     });
 
-    passport.use( 'magic', new LocalStrategy({ usernameField: 'email'}, async (email, password, done) => {
+    passport.use( new LocalStrategy({ usernameField: 'email'}, async (email, password, done) => {
         try {
             const user = await db.User.findOne({where: {email: email}})
 

@@ -19,10 +19,16 @@ export const add: Middleware = async (ctx) => {
         ctx.body = "need url, message, and flags"
     }
 
-    steam.resolve(steamurl).then( id => {
+    try {
+        const steam_id = await steam.resolve(steamurl)
+        let ape = await db.Ape.findOne({where: {steam_id: steam_id}})
+        if (!ape) {
+            ape = await db.Ape.create({
+                steam_id: steam_id
+            })
+        }
 
-    }).catch( err => {
+    } catch (err) {
 
-    });
-
+    }
 }

@@ -6,7 +6,7 @@ const router = new Router();
 
 router.get('/login', authController.loginPage);
 router.get('/logout', authController.logout);
-router.post('/login', passport.authenticate('magic', {
+router.post('/login', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true

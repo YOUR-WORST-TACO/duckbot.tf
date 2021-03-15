@@ -50,6 +50,58 @@ const init = async () => {
     await db.sequelize.sync()
     pass.init();
 
+    /*let t1 = await db.Tag.create({
+        name: "ape",
+        description: "stupid ape"
+    });
+    let t2 = await db.Tag.create({
+        name: "gas",
+        description: "uses gas"
+    });
+
+    let c1 = await db.Complaint.create({
+        message: "sucks gas passer through dick 1",
+        author: "duck"
+    });
+    let c2 = await db.Complaint.create({
+        message: "sucks gas passer through dick 2",
+        author: "duck"
+    });
+    let c3 = await db.Complaint.create({
+        message: "sucks gas passer through dick 3",
+        author: "duck"
+    });
+    let c4 = await db.Complaint.create({
+        message: "sucks gas passer through dick 4",
+        author: "duck"
+    });
+
+
+    c1.addTag(t1);
+    c1.addTag(t2);
+
+    c2.addTag(t1);
+    c2.addTag(t2);
+
+    c3.addTag(t1);
+    c3.addTag(t2);
+
+    c4.addTag(t1);
+    c4.addTag(t2);*/
+
+    const complaints = await db.Complaint.findAll({
+        include: [
+            {
+                model: db.Tag,
+                as: 'tags'
+            }
+        ]
+    })
+
+    for await (const complaint of complaints) {
+        log(complaint.toJSON());
+    }
+
     app.listen(config.server.port, () => {
         log('duckbot.tf started at %s:%s', config.server.host, config.server.port);
     })
