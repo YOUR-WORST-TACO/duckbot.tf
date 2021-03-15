@@ -10,6 +10,9 @@ export default {
     steam: {
         api: process.env.STEAM_KEY || null
     },
+    crypto: {
+        salt: 10
+    },
     database: {
         database: process.env.DATABASE || 'duckbot_tf',
         host: process.env.DATABASE_HOST || 'localhost',
