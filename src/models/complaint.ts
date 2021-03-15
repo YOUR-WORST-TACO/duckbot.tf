@@ -1,18 +1,23 @@
 import * as debug from 'debug';
 
-const log = debug('duckbot.tf:models:ape');
+const log = debug('duckbot.tf:models:complaint');
 
 export default (sequelize, Sequelize) => {
-    log('built ape schema.');
-    return sequelize.define('ape', {
+    log('built complaint schema.');
+    return sequelize.define('complaint', {
         id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        steam_id: {
+        message: {
             type: Sequelize.STRING,
             len: [0, 64]
         },
+        author: {
+            type: Sequelize.STRING,
+            len: [0, 64],
+            default: 'Anonymous'
+        }
     })
 }

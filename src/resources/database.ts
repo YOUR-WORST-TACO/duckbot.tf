@@ -1,6 +1,6 @@
 import * as debug from 'debug';
 import * as Sequelize from 'sequelize';
-import {apeSchema, userSchema, tagSchema} from "../models";
+import {apeSchema, userSchema, tagSchema, complaintSchema} from "../models";
 
 import config from '../config';
 const database = config.database;
@@ -22,11 +22,19 @@ const sequelize = new Sequelize(database.database, database.user, database.passw
 const User = userSchema(sequelize, Sequelize);
 const Ape = apeSchema(sequelize, Sequelize);
 const Tag = tagSchema(sequelize, Sequelize);
+const Complaint = complaintSchema(sequelize, Sequelize);
+
+Ape.hasMany(Complaint, {as: 'complaints'});
+Complaint.belongsTo(Ape, {as: 'ape'});
+
+Complaint.belongsToMany(Tag, {through: 'complaint_tag'});
+Tag.belongsToMany(Complaint, {through: 'complaint_tag'});
 
 export default {
     Sequelize: Sequelize,
     sequelize: sequelize,
     User: User,
     Ape: Ape,
-    Tag: Tag
+    Tag: Tag,
+    Complaint: Complaint
 };
