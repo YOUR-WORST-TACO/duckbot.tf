@@ -6,6 +6,7 @@ import * as koaBody from 'koa-body';
 import * as render from 'koa-ejs';
 import * as passport from 'koa-passport';
 import * as flash from 'koa-better-flash';
+import * as serve from 'koa-static';
 
 import {database as db, passport as pass} from './resources';
 import config from './config';
@@ -35,6 +36,8 @@ app.use(session({
     secure: false, /** (boolean) secure cookie*/
     sameSite: null,
 }, app));
+
+app.use(serve(path.join(__dirname, '..', 'public')));
 
 app.use(helmet());
 app.use(koaBody());
@@ -89,7 +92,7 @@ const init = async () => {
     c4.addTag(t1);
     c4.addTag(t2);*/
 
-    const complaints = await db.Complaint.findAll({
+    /*const complaints = await db.Complaint.findAll({
         include: [
             {
                 model: db.Tag,
@@ -100,7 +103,15 @@ const init = async () => {
 
     for await (const complaint of complaints) {
         log(complaint.toJSON());
-    }
+    }*/
+
+    const tags = await db.Tag.findAll({
+        where: {
+            id: ['1','4']
+        }
+    })
+
+    log(tags);
 
     app.listen(config.server.port, () => {
         log('duckbot.tf started at %s:%s', config.server.host, config.server.port);

@@ -10,13 +10,16 @@ const steam = new SteamAPI(config.steam.api)
 const log = debug('duckbot.tf:controllers:ape');
 
 export const add: Middleware = async (ctx) => {
+    console.log(ctx.request.body);
     const steamurl = ctx.request.body.steamurl;
     const message = ctx.request.body.message;
-    const flags = ctx.request.body.flags;
+    const author = ctx.request.body.author || 'Anonymous'; // can be null
+    const tags = ctx.request.body.tags;
 
-    if (!steamurl || !message || !flags) {
+    if (!steamurl || !message || !tags) {
         ctx.status = 400;
         ctx.body = "need url, message, and flags"
+        return;
     }
 
     try {
@@ -28,7 +31,28 @@ export const add: Middleware = async (ctx) => {
             })
         }
 
-    } catch (err) {
+        const complaint = await db.Complaint.create({
+            message: message,
+            author: author
+        });
 
+        ape.addComplaint(complaint);
+
+        const db_tags = await db.Tag.findAll({
+            where: {
+                id: tags
+            }
+        });
+
+        for (const tag of db_tags) {
+            complaint.addTag(tag);
+        }
+
+    } catch (err) {
+        console.log(err);
     }
+}
+
+export const testthing: Middleware = async (ctx) => {
+    log(ctx.request.body);
 }

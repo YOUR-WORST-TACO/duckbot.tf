@@ -5,5 +5,6 @@ import * as passport from "koa-passport";
 const router = new Router();
 
 router.post('/newape', apeController.add);
+router.post('/testpost', apeController.testthing);
 
 export default router;
