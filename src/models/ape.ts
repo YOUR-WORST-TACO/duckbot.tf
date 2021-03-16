@@ -14,5 +14,11 @@ export default (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             len: [0, 64]
         },
+        avatar: {
+            type: Sequelize.TEXT,
+        },
+        nickname: {
+            type: Sequelize.TEXT,
+        }
     })
 }

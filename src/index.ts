@@ -12,9 +12,16 @@ import {database as db, passport as pass} from './resources';
 import config from './config';
 import * as path from "path";
 import * as routes from './routes';
+import * as betterInventory from './helpers/betterInventory';
 
 const log = debug('duckbot.tf');
 const app = new Koa();
+
+// temp remove later
+import * as SteamAPI from 'steamapi';
+import * as steamInventory from 'get-steam-inventory';
+
+const steam = new SteamAPI(config.steam.api)
 
 render(app, {
     root: path.join(__dirname, 'views'),
@@ -105,13 +112,13 @@ const init = async () => {
         log(complaint.toJSON());
     }*/
 
-    const tags = await db.Tag.findAll({
-        where: {
-            id: ['1','4']
-        }
-    })
+    const steamid = await steam.resolve("https://steamcommunity.com/id/yourworsttaco/");
 
-    log(tags);
+    const fart = await steam.getUserSummary(steamid);
+
+    betterInventory.getInventory("test", steamid, 2);
+
+    console.log(fart);
 
     app.listen(config.server.port, () => {
         log('duckbot.tf started at %s:%s', config.server.host, config.server.port);

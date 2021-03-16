@@ -5308,7 +5308,7 @@ S2.define('select2/options',[
         var dataName = attributeName.substring(prefix.length);
 
         // Get the data contents from the consistent source
-        // This is more than likely the jQuery data helper
+        // This is more than likely the jQuery data helpers
         var dataValue = Utils.GetData($e[0], dataName);
 
         // camelCase the attribute name to match the spec
