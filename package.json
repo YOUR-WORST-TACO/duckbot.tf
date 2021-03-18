@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/YOUR-WORST-TACO/duckbot.tf#readme",
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/dotenv": "^8.2.0",
     "@types/koa": "^2.13.1",
     "@types/koa-ejs": "^4.2.2",

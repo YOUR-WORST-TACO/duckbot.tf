@@ -12,7 +12,7 @@ import {database as db, passport as pass} from './resources';
 import config from './config';
 import * as path from "path";
 import * as routes from './routes';
-import * as betterInventory from './helpers/betterInventory';
+import * as ape_utils from './helpers/ape_utils';
 
 const log = debug('duckbot.tf');
 const app = new Koa();
@@ -112,11 +112,10 @@ const init = async () => {
         log(complaint.toJSON());
     }*/
 
-    const steamid = await steam.resolve("https://steamcommunity.com/id/yourworsttaco/");
+    const steamid = await steam.resolve("https://steamcommunity.com/id/TrainWithWayne/");
 
     const fart = await steam.getUserSummary(steamid);
 
-    betterInventory.getInventory("test", steamid, 2);
 
     console.log(fart);
 

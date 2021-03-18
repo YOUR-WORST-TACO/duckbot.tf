@@ -14,11 +14,29 @@ export default (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             len: [0, 64]
         },
+        steam_url: {
+            type: Sequelize.TEXT
+        },
         avatar: {
             type: Sequelize.TEXT,
         },
         nickname: {
             type: Sequelize.TEXT,
+        },
+        tour_two_cities: {
+            type: Sequelize.INTEGER
+        },
+        tour_gear_grinder: {
+            type: Sequelize.INTEGER
+        },
+        tour_steel_trap: {
+            type: Sequelize.INTEGER
+        },
+        tour_mecha_engine: {
+            type: Sequelize.INTEGER
+        },
+        tour_oil_spill: {
+            type: Sequelize.INTEGER
         }
     })
 }
