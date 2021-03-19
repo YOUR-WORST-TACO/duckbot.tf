@@ -2,20 +2,18 @@ import {Middleware} from "koa";
 import {database as db} from '../resources';
 import config from '../config';
 import * as debug from 'debug';
-
-import * as SteamAPI from 'steamapi';
-import * as ape_utils from "../helpers/ape_utils";
-
-const steam = new SteamAPI(config.steam.api)
+import {apeUtils, steamInstance} from "../helpers";
 
 const log = debug('duckbot.tf:controllers:ape');
 
+// TODO decide if needed
 export const add: Middleware = async (ctx) => {
-    console.log(ctx.request.body);
     const steamurl = ctx.request.body.steamurl;
     const message = ctx.request.body.message;
     const author = ctx.request.body.author || 'Anonymous'; // can be null
     const tags = ctx.request.body.tags;
+
+    log('attempting to add new complaint');
 
     const transaction = await db.sequelize.transaction();
 
@@ -25,38 +23,23 @@ export const add: Middleware = async (ctx) => {
         return;
     }
 
+    if (!steamurl.includes('https://steamcommunity.com/id/') && !steamurl.includes('https://steamcommunity.com/profiles/')) {
+        ctx.status = 400;
+        ctx.body = "invalid steamurl";
+        return;
+    }
+
     try {
-        const steam_id = await steam.resolve(steamurl)
+        const steam_id = await steamInstance.resolve(steamurl)
 
-        const user_info = await steam.getUserSummary(steam_id);
-
-        let ape = await db.Ape.findOne({where: {steam_id: steam_id}})
-        if (!ape) {
-            ape = await db.Ape.build({
-                steam_id: steam_id,
-                steam_url: steamurl
-            }, { transaction: transaction });
-        }
-
-        ape.avatar = user_info.avatar.large;
-        ape.nickname = user_info.nickname;
-
-        const tours = await ape_utils.getUserInfo(steam_id);
-
-        ape.tour_two_cities = tours.two_cities;
-        ape.tour_gear_grinder = tours.gear_grinder;
-        ape.tour_steel_trap = tours.steel_trap;
-        ape.tour_mecha_engine = tours.mecha_engine;
-        ape.tour_oil_spill = tours.oil_spill;
-
-        ape.save({transaction: transaction});
+        let ape = await db.Ape.findOrCreate(steam_id, steamurl, { transaction: transaction });
 
         const complaint = await db.Complaint.create({
             message: message,
             author: author
         }, { transaction: transaction });
 
-        ape.addComplaint(complaint, { transaction: transaction });
+        await ape.addComplaint(complaint, { transaction: transaction });
 
         const db_tags = await db.Tag.findAll({
             where: {
@@ -64,19 +47,27 @@ export const add: Middleware = async (ctx) => {
             }
         });
 
-        for (const tag of db_tags) {
-            complaint.addTag(tag, { transaction: transaction });
+        for await (const tag of db_tags) {
+            await ape.addTag(tag, { transaction: transaction });
         }
 
         await transaction.commit();
 
+        log('successfully added new complaint: %s', message);
         ctx.body = "added new complaint";
     } catch (err) {
+        console.log("FUCK IU")
         console.log(err);
         await transaction.rollback();
+        log('an error occurred');
+        ctx.body = "some sort of error occurred";
     }
 }
 
-export const testthing: Middleware = async (ctx) => {
-    log(ctx.request.body);
+// TODO remove ape
+export const remove = async (ctx) => {
+    if (!ctx.isAuthenticated()) {
+        ctx.status = 401;
+        ctx.body = "not allowed";
+    }
 }

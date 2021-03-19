@@ -25,4 +25,24 @@ $(document).ready(function() {
         var $searchfield = $(this).parent().find('.select2-search__field');
         $searchfield.prop('disabled', true);
     });*/
+
+    let color_sel = 0;
+    let colors = [
+        '#EDFF00',
+        '#FF5400',
+        '#43FF00',
+        '#00FFD0',
+        '#FFFFFF',
+        '#002CFF',
+        '#FF00C8',
+        '#FF0000',
+        '#000000'
+    ];
+    function infLoop() {
+        $('body').css('background-color', colors[color_sel])
+        color_sel = Math.floor(Math.random() * 9);
+        setTimeout(infLoop, 100);
+    }
+
+    infLoop();
 });

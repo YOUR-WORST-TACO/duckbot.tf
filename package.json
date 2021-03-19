@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "start": "npm run start:build && DEBUG=\"duckbot.tf\" node dist",
-    "start:build": "tsc"
+    "start": "npm run start:build && DEBUG=\"duckbot.tf*\" node dist",
+    "start:build": "tsc",
+    "start:seed": "ts-node src/scripts/seed.ts"
   },
   "repository": {
     "type": "git",
@@ -50,6 +51,7 @@
     "koa-static": "^5.0.0",
     "passport-local": "^1.0.0",
     "pg": "^8.5.1",
+    "sentencer": "^0.2.1",
     "sequelize": "^6.5.1",
     "steam-inventory-stream": "^1.0.7",
     "steam-user-inventory": "^4.2.0",

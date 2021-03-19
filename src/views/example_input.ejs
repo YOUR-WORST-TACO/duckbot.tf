@@ -1,17 +1,12 @@
-<div>
-    <p>
-        Welcome to duckbot.tf
-    </p>
-</div>
-
 <form action="/newape" method="post">
     <input type="text" name="steamurl"/>
     <input type="text" name="message"/>
     <input type="text" name="author"/>
     <select class="js-example-basic-single js-states form-control" multiple="multiple" name="tags">
         <% for (let i = 0; i < apeTags.length; i++) { %>
-            <option value="<%= apeTags[i].id %>"><%= apeTags[i].name %></option>
+        <option value="<%= apeTags[i].id %>"><%= apeTags[i] %></option>
         <% } %>
+        <option value="2">Gas</option>
     </select>
     <input type="submit" value="Submit"/>
 </form>
