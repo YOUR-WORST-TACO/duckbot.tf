@@ -5,9 +5,7 @@ const router = new Router();
 
 router.get('/', async(ctx, next) => {
     const tags = await db.Tag.findAll();
-    for (const tag of tags) {
-        console.log(tag);
-    }
+    // @ts-ignore
     await ctx.render('index', { title: 'Home', apeTags: tags});
 })
 

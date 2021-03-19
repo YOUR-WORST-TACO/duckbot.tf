@@ -4,11 +4,14 @@ const log = debug('duckbot.tf:models:user');
 
 export default (sequelize, Sequelize) => {
     log('built user schema.')
-    return sequelize.define('user', {
+    let user = sequelize.define('user', {
         id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
             primaryKey: true
+        },
+        open_id: {
+            type: Sequelize.STRING
         },
         email: {
             type: Sequelize.STRING,
@@ -24,5 +27,16 @@ export default (sequelize, Sequelize) => {
             type: Sequelize.BOOLEAN,
             defaultValue: false
         }
-    })
+    });
+
+    user.findByOpenID = async (id, done) => {
+        try {
+            const foundUser = await user.findOne({where: {open_id: id}})
+            done(null, foundUser);
+        } catch (e) {
+            done(e);
+        }
+    }
+
+    return user;
 }

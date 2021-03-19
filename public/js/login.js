@@ -44,5 +44,5 @@ $(document).ready(function() {
         setTimeout(infLoop, 100);
     }
 
-    infLoop();
+    //infLoop();
 });

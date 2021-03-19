@@ -1,8 +1,10 @@
 import debug from 'debug';
 import * as bcrypt from 'bcrypt';
 import * as passport from 'koa-passport';
+import {Strategy as SteamStrategy} from 'passport-steam';
 import {database as db} from '../resources';
 import {Strategy as LocalStrategy} from 'passport-local'
+import config from '../config';
 
 export const init = () => {
     // @ts-ignore
@@ -29,4 +31,14 @@ export const init = () => {
             done(err);
         }
     }));
+
+    passport.use(new SteamStrategy({
+        returnURL: 'http://localhost:3000/auth/steam/callback',
+        realm: 'http://localhost:3000',
+        apiKey: config.steam.api
+    }, function(identifier, profile, done) {
+        db.User.findByOpenID(identifier, (err, user) => {
+            done(err, user);
+        })
+    }))
 }

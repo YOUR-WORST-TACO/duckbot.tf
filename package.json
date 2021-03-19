@@ -50,6 +50,7 @@
     "koa-session": "^6.1.0",
     "koa-static": "^5.0.0",
     "passport-local": "^1.0.0",
+    "passport-steam": "^1.0.15",
     "pg": "^8.5.1",
     "sentencer": "^0.2.1",
     "sequelize": "^6.5.1",

@@ -11,6 +11,20 @@ router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',
     failureFlash: true
 }));
+router.get('/login/steam', passport.authenticate('steam'), (ctx) => {
+    console.log(ctx.response);
+    ctx.redirect('/');
+})
+router.get('/auth/steam/callback', passport.authenticate('steam'), (ctx) => {
+    console.log(ctx.response);
+    ctx.redirect('/');
+})
+
+router.get('/error', async (ctx) => {
+    console.log(ctx.response);
+    ctx.body = "error";
+})
+
 router.post('/register', authController.register);
 
 export default router;
