@@ -12,6 +12,7 @@ import {database as db, passport as pass} from './resources';
 import config from './config';
 import * as path from "path";
 import * as routes from './routes';
+import {steamInstance} from "./helpers";
 
 const log = debug('duckbot.tf');
 const app = new Koa();
@@ -52,6 +53,14 @@ for (const routeKey of Object.keys(routes)) {
 const init = async () => {
     await db.sequelize.sync()
     pass.init();
+
+    const steamurl = 'https://steamcommunity.com/id/yourworsttaco/';
+
+    const steam_id = await steamInstance.resolve(steamurl);
+
+    const user_info = await steamInstance.getUserSummary(steam_id);
+
+    console.log(user_info);
 
     app.listen(config.server.port, () => {
         log('duckbot.tf started at %s:%s', config.server.host, config.server.port);

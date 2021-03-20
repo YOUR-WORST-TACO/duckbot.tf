@@ -37,6 +37,7 @@ export const init = () => {
         realm: 'http://localhost:3000',
         apiKey: config.steam.api
     }, function(identifier, profile, done) {
+        console.log(profile);
         db.User.findByOpenID(identifier, (err, user) => {
             done(err, user);
         })

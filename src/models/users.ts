@@ -15,13 +15,16 @@ export default (sequelize, Sequelize) => {
         },
         email: {
             type: Sequelize.STRING,
-            allowNull: false,
             len: [0, 64]
         },
         password: {
             type: Sequelize.STRING,
-            allowNull: false,
             len: [0, 128]
+        },
+        user_type: {
+            type: Sequelize.ENUM({
+                values: ['super-admin', 'admin', 'member', 'duck-curious']
+            })
         },
         verified: {
             type: Sequelize.BOOLEAN,
@@ -32,6 +35,7 @@ export default (sequelize, Sequelize) => {
     user.findByOpenID = async (id, done) => {
         try {
             const foundUser = await user.findOne({where: {open_id: id}})
+            console.log(id);
             done(null, foundUser);
         } catch (e) {
             done(e);

@@ -19,7 +19,13 @@ export default (sequelize, Sequelize) => {
         steam_url: {
             type: Sequelize.TEXT
         },
-        avatar: {
+        avatar_small: {
+            type: Sequelize.TEXT
+        },
+        avatar_medium: {
+            type: Sequelize.TEXT
+        },
+        avatar_large: {
             type: Sequelize.TEXT,
         },
         nickname: {
@@ -58,7 +64,10 @@ export default (sequelize, Sequelize) => {
             }, options);
         }
 
-        newApe.avatar = user_info.avatar.large;
+        newApe.avatar_small = user_info.avatar.small;
+        newApe.avatar_medium = user_info.avatar.medium;
+        newApe.avatar_large = user_info.avatar.large;
+
         newApe.nickname = user_info.nickname;
 
         const tours = await apeUtils.getUserInfo(steam_id);

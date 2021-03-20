@@ -27,6 +27,9 @@ const Complaint = complaintSchema(sequelize, Sequelize);
 Ape.hasMany(Complaint, {as: 'complaints'});
 Complaint.belongsTo(Ape, {as: 'ape'});
 
+User.hasMany(Complaint, {as: 'complaints'});
+Complaint.belongsTo(User, {as: 'user'});
+
 Ape.belongsToMany(Tag, {through: 'ape_tag'});
 Tag.belongsToMany(Ape, {through: 'ape_tag'});
 

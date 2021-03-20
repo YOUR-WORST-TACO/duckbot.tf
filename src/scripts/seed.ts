@@ -39,7 +39,8 @@ const seed = async () => {
             'https://steamcommunity.com/profiles/76561198108795706/',
             'https://steamcommunity.com/id/GinIsWoke/',
             'https://steamcommunity.com/id/ColonnelloJohnson/',
-            'https://steamcommunity.com/id/xxxbloodrainxxx/'
+            'https://steamcommunity.com/id/xxxbloodrainxxx/',
+            'https://steamcommunity.com/profiles/76561198154116987'
         ];
 
         for await (const ape of apes) {

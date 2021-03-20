@@ -14,11 +14,6 @@ export default (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             len: [0, 64]
         },
-        author: {
-            type: Sequelize.STRING,
-            len: [0, 64],
-            default: 'Anonymous'
-        },
         approved: {
             type: Sequelize.BOOLEAN,
             defaultValue: false

@@ -41,10 +41,30 @@ export const register: Middleware = async (ctx) => {
 
     const passwordHash = await bcrypt.hash(password, config.crypto.salt);
 
-    user = await db.User.create({
+    console.log(db.User.rawAttributes.user_type.values);
+
+    await db.User.create({
         email: email,
-        password: passwordHash
+        password: passwordHash,
     });
 
     ctx.body = "successfully registered user";
+}
+
+export const steamRegister: Middleware = async (ctx) => {
+    const new_user_id = ctx.request.body.steam_id;
+
+    let user = await db.User.findOne({ where: {open_id: new_user_id}});
+
+    if (user) {
+        ctx.status = 400;
+        ctx.body = "That user is already created.";
+        return;
+    }
+
+    await db.User.create({
+        open_id: new_user_id
+    });
+
+    ctx.body = "successfully added user";
 }

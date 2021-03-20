@@ -16,15 +16,16 @@ router.get('/login/steam', passport.authenticate('steam'), (ctx) => {
     ctx.redirect('/');
 })
 router.get('/auth/steam/callback', passport.authenticate('steam'), (ctx) => {
-    console.log(ctx.response);
+    console.log(ctx.request.body);
     ctx.redirect('/');
 })
 
 router.get('/error', async (ctx) => {
-    console.log(ctx.response);
+    console.log(ctx.request.body)
     ctx.body = "error";
 })
 
 router.post('/register', authController.register);
+router.post('/register/steam', authController.steamRegister);
 
 export default router;
